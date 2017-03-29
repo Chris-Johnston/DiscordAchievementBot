@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DiscordAchievementBot": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\Amazon Drive\\Amazon Drive\\Visual Studio Projects\\AchievementBot\\Config.xml\""
+    }
+  }
+}
