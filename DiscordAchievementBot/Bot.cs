@@ -16,6 +16,7 @@ namespace DiscordAchievementBot
         public async Task Start()
         {
             // define DiscordSocketClient
+
             client = new DiscordSocketClient(new DiscordSocketConfig() { LogLevel = Discord.LogSeverity.Debug });
 
             // log in
@@ -32,6 +33,7 @@ namespace DiscordAchievementBot
             client.Log += Log;
 
             client.Ready += Client_Ready;
+            
 
             await Task.Delay(-1);
         }

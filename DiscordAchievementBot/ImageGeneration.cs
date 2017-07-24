@@ -29,11 +29,11 @@ namespace DiscordAchievementBot
             // now do stuff with the image
             using (MagickImage image = new MagickImage(backgroundImagePath))
             {
-                MagickImage headerLayer = new MagickImage(MagickColor.FromRgba(0, 0, 0, 0), image.Width, image.Height / 2);
+                MagickImage headerLayer = new MagickImage(MagickColor.FromRgba(0, 0, 0, 0), image.Width, image.Height);
 
                 if (type == AchievementType.XboxOne || type == AchievementType.XboxOneRare)
                 {
-                    headerLayer.Settings.FontFamily = "Arial";
+                    headerLayer.Settings.FontFamily = "Segoe UI";
                     headerLayer.Settings.FontPointsize = 36;
                     headerLayer.Settings.TextGravity = Gravity.Southwest;
                     headerLayer.Settings.FillColor = MagickColor.FromRgb(255, 255, 255);
@@ -41,7 +41,8 @@ namespace DiscordAchievementBot
 
                 if (type == AchievementType.XboxOne || type == AchievementType.Xbox360)
                 {
-                    headerLayer.Annotate("Achievement Unlocked", Gravity.Southwest);
+                    string s = string.Format("{0} - {1}", gs.ToString(), achievementName);
+                    headerLayer.Annotate(s, new MagickGeometry(185,27,400,80), Gravity.West);
                 }
                 else if (type == AchievementType.XboxOneRare)
                 {

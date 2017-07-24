@@ -21,11 +21,11 @@ namespace DiscordAchievementBot
             try
             {
                 // just generate some images
-                ImageGeneration.GenerateImage("Wow great job!", 1234, AchievementType.Xbox360, @"D:\Amazon Drive\Amazon Drive\Visual Studio Projects\AchievementBot\test1.png");
-                ImageGeneration.GenerateImage("Nice.", 5, AchievementType.XboxOneRare, @"D:\Amazon Drive\Amazon Drive\Visual Studio Projects\AchievementBot\test2.png");
-                ImageGeneration.GenerateImage("Welcome to EB Games", 1337, AchievementType.XboxOne, @"D:\Amazon Drive\Amazon Drive\Visual Studio Projects\AchievementBot\test3.png");
+                ImageGeneration.GenerateImage("AchievementName", 1234, AchievementType.Xbox360, @"D:\Amazon Drive\Amazon Drive\Visual Studio Projects\AchievementBot\test1.png");
+                ImageGeneration.GenerateImage("AchievementName", 5, AchievementType.XboxOneRare, @"D:\Amazon Drive\Amazon Drive\Visual Studio Projects\AchievementBot\test2.png");
+                ImageGeneration.GenerateImage("AchievementName", 1337, AchievementType.XboxOne, @"D:\Amazon Drive\Amazon Drive\Visual Studio Projects\AchievementBot\test3.png");
 
-                //new Bot().Start().GetAwaiter().GetResult();
+                new Bot().Start().GetAwaiter().GetResult();
             }
             catch(Exception e)
             {
