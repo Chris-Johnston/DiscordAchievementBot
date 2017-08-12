@@ -1,0 +1,7 @@
+<Configuration>
+	<ConnectionToken>YOUR DISCORD USER BOT TOKEN HERE</ConnectionToken>
+	<ImageTemporaryDirectory>%temp%\</ImageTemporaryDirectory>
+	<AchievementXboxOneRare>C:\Path To\test.png</AchievementXboxOneRare>
+	<AchievementXboxOne>C:\Path To\xboxone.png</AchievementXboxOne>
+	<AchievementXbox360>C:\Path To\test.png</AchievementXbox360>
+</Configuration>

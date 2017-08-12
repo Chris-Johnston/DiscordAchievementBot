@@ -16,13 +16,13 @@ namespace DiscordAchievementBot
             {
                 default:
                 case AchievementType.XboxOne:
-                    backgroundImagePath = GlobalConfiguration.AchievementXboxOne;
+                    backgroundImagePath = Program.GlobalConfig.Data.AchievementXboxOne;
                     break;
                 case AchievementType.XboxOneRare:
-                    backgroundImagePath = GlobalConfiguration.AchievementXboxOneRare;
+                    backgroundImagePath = Program.GlobalConfig.Data.AchievementXboxOneRare;
                     break;
                 case AchievementType.Xbox360:
-                    backgroundImagePath = GlobalConfiguration.AchievementXbox360;
+                    backgroundImagePath = Program.GlobalConfig.Data.AchievementXbox360;
                     break;
             }
 
@@ -42,7 +42,9 @@ namespace DiscordAchievementBot
                 if (type == AchievementType.XboxOne || type == AchievementType.Xbox360)
                 {
                     string s = string.Format("{0} - {1}", gs.ToString(), achievementName);
-                    headerLayer.Annotate(s, new MagickGeometry(185,27,400,80), Gravity.West);
+                    //headerLayer.Annotate(s, new MagickGeometry(185,27,400,80), Gravity.West);
+                    //headerLayer.Annotate(s, new MagickGeometry(225, 27, 400, 80), Gravity.West);
+                    headerLayer.Annotate(s, new MagickGeometry(225, 30, 400, 80), Gravity.West);
                 }
                 else if (type == AchievementType.XboxOneRare)
                 {
@@ -53,10 +55,10 @@ namespace DiscordAchievementBot
                 }
 
 
-                //todo make this fancier later on
-                image.Annotate(achievementName, Gravity.North);
-                image.Annotate(gs.ToString(), Gravity.West);
-                image.Annotate(type.ToString(), Gravity.East);
+                //placeholder debug stuff
+                //image.Annotate(achievementName, Gravity.North);
+                //image.Annotate(gs.ToString(), Gravity.West);
+                //image.Annotate(type.ToString(), Gravity.East);
 
                 image.Composite(headerLayer, CompositeOperator.Over);
 

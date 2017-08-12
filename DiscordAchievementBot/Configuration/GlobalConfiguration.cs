@@ -6,28 +6,31 @@ using System.Xml.Serialization;
 
 namespace DiscordAchievementBot
 {
-    public static class GlobalConfiguration
+    public class GlobalConfiguration
     {
+        private string m_Path = null;
 
-        private static Configuration data;
+        private GlobalConfiguration() { }
 
-        public static void Load(string configFilePath)
+        public GlobalConfiguration(string path)
+        {
+            m_Path = path;
+            Load();
+        }
+
+        private Configuration m_data = null;
+        public Configuration Data { get { return m_data; } }
+
+        public void Load()
         {
             // make serializer
             XmlSerializer serializer = new XmlSerializer(typeof(Configuration));
             // make file stream
-            FileStream fs = new FileStream(configFilePath, FileMode.Open);
+            FileStream fs = new FileStream(m_Path, FileMode.Open);
             //deserialize
-            data = (Configuration)serializer.Deserialize(fs);
+            m_data = (Configuration)serializer.Deserialize(fs);
 
             fs.Dispose();
         }
-
-        public static string ConnectionToken { get { return data.ConnectionToken; } }
-        public static string ImageTemporaryDirectory { get { return data.ImageTemporaryDirectory; } }
-        public static string AchievementXboxOneRare { get { return data.AchievementXboxOneRare; } }
-        public static string AchievementXboxOne { get { return data.AchievementXboxOne; } }
-        public static string AchievementXbox360 { get { return data.AchievementXbox360; } }
-
     }
 }
