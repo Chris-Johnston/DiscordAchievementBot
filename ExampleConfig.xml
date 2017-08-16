@@ -1,0 +1,7 @@
+<Configuration>
+	<ConnectionToken>your token here</ConnectionToken>
+	<ImageTemporaryDirectory>%temp%\</ImageTemporaryDirectory>
+	<AchievementXboxOneRare>path to xbox one rare image here</AchievementXboxOneRare>
+	<AchievementXboxOne>path to xbox one image here</AchievementXboxOne>
+	<AchievementXbox360>path to achievement xbox 360 image here</AchievementXbox360>
+</Configuration>
