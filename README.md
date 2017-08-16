@@ -6,7 +6,7 @@ A bot that generates Xbox-style achievement popups for a Discord server.
 
 ## How to Use
 
-**Server Owners**: You can add this bot to your server using <URL TO COME SOON>
+**Server Owners**: You can add this bot to your server using **todo**
 
 **Developers/Contributors**:
 
