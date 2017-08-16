@@ -1,4 +1,5 @@
 # Discord Achievement Bot
+[![Build status](https://ci.appveyor.com/api/projects/status/9ap9d3d2cb6uw36s/branch/master?svg=true)](https://ci.appveyor.com/project/Chris-Johnston/discordachievementbot/branch/master)
 
 A bot that generates Xbox-style achievement popups for a Discord server.
 
