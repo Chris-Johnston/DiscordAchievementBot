@@ -11,20 +11,18 @@ namespace DiscordAchievementBot
     public class CommandHandler
     {
         private CommandService commands;
-        private DiscordSocketClient client;
-        private IDependencyMap map;
+        private DiscordSocketClient m_client;
 
-        public async Task Install(IDependencyMap _map)
+        public async Task Install(DiscordSocketClient _client)
         {
-            client = _map.Get<DiscordSocketClient>();
+            m_client = _client;
+
             commands = new CommandService();
             commands.Log += Bot.Log;
-
-            map = _map;
-
+            
             await commands.AddModulesAsync(Assembly.GetEntryAssembly());
 
-            client.MessageReceived += HandleCommand;
+            m_client.MessageReceived += HandleCommand;
         }
 
         private async Task HandleCommand(SocketMessage parameterMessage)
@@ -38,21 +36,22 @@ namespace DiscordAchievementBot
             // Determine if the message has a valid prefix, adjust argPos 
 
             //todo update command handler stuff
-            if (!(message.HasMentionPrefix(client.CurrentUser, ref argPos) || message.HasCharPrefix('+', ref argPos))) return;
+            if (!(message.HasMentionPrefix(m_client.CurrentUser, ref argPos) || message.HasCharPrefix('+', ref argPos))) return;
 
             // Create a Command Context
-            var context = new CommandContext(client, message);
+            var context = new CommandContext(m_client, message);
             // Execute the Command, store the result
-            var result = await commands.ExecuteAsync(context, argPos, map);
+            var result = await commands.ExecuteAsync(context, argPos);
 
-            // If the command failed, notify the user
+            // If the command failed
             if (!result.IsSuccess)
             {
-                Console.WriteLine("Command failed: {0}", result.ErrorReason);
-                //don't think I should in this case
-                //todo consider logging on HandleCommand failure.
+                // log the error
+                Discord.LogMessage errorMessage = new Discord.LogMessage(Discord.LogSeverity.Warning, "CommandHandler", result.ErrorReason);
+                await Bot.Log(errorMessage);
+                
+                // don't actually reply back with the error
             }
-                //await message.Channel.SendMessageAsync($"**Error:** {result.ErrorReason}");
         }
     }
 }

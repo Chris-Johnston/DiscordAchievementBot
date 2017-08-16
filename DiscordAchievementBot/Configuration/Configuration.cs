@@ -19,13 +19,13 @@ namespace DiscordAchievementBot
         [XmlElementAttribute("ImageTemporaryDirectory")]
         public string ImageTemporaryDirectory;
 
-        // xb1 rare achievement path
+        // xb1 rare achievement image path
         [XmlElementAttribute("AchievementXboxOneRare")]
         public string AchievementXboxOneRare;
-        // xb1 regular achievement path
+        // xb1 regular achievement image path
         [XmlElementAttribute("AchievementXboxOne")]
         public string AchievementXboxOne;
-        // xb360 achievement path
+        // xb360 achievement image path
         [XmlElementAttribute("AchievementXbox360")]
         public string AchievementXbox360;
     }

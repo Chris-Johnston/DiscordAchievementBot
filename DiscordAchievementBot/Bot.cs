@@ -16,22 +16,20 @@ namespace DiscordAchievementBot
         public async Task Start()
         {
             // define DiscordSocketClient
+
             client = new DiscordSocketClient(new DiscordSocketConfig() { LogLevel = Discord.LogSeverity.Debug });
 
             // log in
-            await client.LoginAsync(Discord.TokenType.Bot, GlobalConfiguration.ConnectionToken);
+            await client.LoginAsync(Discord.TokenType.Bot, Program.GlobalConfig.Data.ConnectionToken);
             await client.StartAsync();
 
-            // make DependencyMap
-            var map = new DependencyMap();
-            map.Add(client);
-
             handler = new CommandHandler();
-            await handler.Install(map);
+            await handler.Install(client);
 
             client.Log += Log;
 
             client.Ready += Client_Ready;
+            
 
             await Task.Delay(-1);
         }
