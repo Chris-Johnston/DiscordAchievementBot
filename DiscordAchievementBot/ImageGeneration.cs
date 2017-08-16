@@ -1,13 +1,23 @@
 ﻿using ImageMagick;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace DiscordAchievementBot
 {
     public class ImageGeneration
     {
-        public static void GenerateImage(string achievementName, int gs, AchievementType type, string outputFilePath)
+        public static string GenerateImagePath(ulong imageID)
+        {
+            // generate path in format
+            // %temp%/123456789.png
+            string path = string.Format("{0}{1}.png", Program.GlobalConfig.Data.ImageTemporaryDirectory, imageID);
+            // expand environment variables
+            return Environment.ExpandEnvironmentVariables(path);
+        }
+
+        public static void GenerateImage(string achievementName, int gs, AchievementType type, ulong imageID)
         {
             // first determine background image path
             string backgroundImagePath;
@@ -62,8 +72,17 @@ namespace DiscordAchievementBot
 
                 image.Composite(headerLayer, CompositeOperator.Over);
 
-                image.Write(outputFilePath);
+                image.Write(GenerateImagePath(imageID));
             }
+        }
+
+        /// <summary>
+        /// Deletes an image
+        /// </summary>
+        /// <param name="messageID"></param>
+        public static void DeleteImage(ulong messageID)
+        {
+            File.Delete(GenerateImagePath(messageID));
         }
     }
 }
