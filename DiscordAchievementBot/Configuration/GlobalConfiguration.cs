@@ -18,8 +18,13 @@ namespace DiscordAchievementBot
             Load();
         }
 
+        // configuration
         private Configuration m_data = null;
         public Configuration Data { get { return m_data; } }
+
+        // gamer score generator
+        private GamerScoreGenerator m_gamerScoreGen = new GamerScoreGenerator();
+        public GamerScoreGenerator GamerScoreGenerator {  get { return m_gamerScoreGen; } }
 
         public void Load()
         {
