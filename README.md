@@ -54,6 +54,12 @@ Using this command will mention the user that requested it to indicate that it i
 #### Meta commands
 
 ```
++Help
+```
+
+Replies with help information.
+
+```
 +About
 ```
 
