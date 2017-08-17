@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordAchievementBot", "DiscordAchievementBot\DiscordAchievementBot.csproj", "{ECE572BB-F1D0-4F16-AD74-14E5B2682AB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordAchievementBot", "DiscordAchievementBot\DiscordAchievementBot.csproj", "{ECE572BB-F1D0-4F16-AD74-14E5B2682AB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordAchivementBot.Tests", "DiscordAchivementBot.Tests\DiscordAchivementBot.Tests.csproj", "{F22A4FFD-F0D9-4DB1-ABAF-39F3B1D26866}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{ECE572BB-F1D0-4F16-AD74-14E5B2682AB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECE572BB-F1D0-4F16-AD74-14E5B2682AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECE572BB-F1D0-4F16-AD74-14E5B2682AB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F22A4FFD-F0D9-4DB1-ABAF-39F3B1D26866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F22A4FFD-F0D9-4DB1-ABAF-39F3B1D26866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F22A4FFD-F0D9-4DB1-ABAF-39F3B1D26866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F22A4FFD-F0D9-4DB1-ABAF-39F3B1D26866}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
