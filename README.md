@@ -8,7 +8,7 @@ A bot that generates Xbox-style achievement popups for a Discord server.
 
 ## How to Use
 
-**Server Owners**: You can add this bot to your server using **todo**
+**Server Owners**: [You can add this bot to your server using this link](https://discordapp.com/oauth2/authorize?client_id=347632041300328459&scope=bot).
 
 **Developers/Contributors**:
 
