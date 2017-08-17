@@ -32,10 +32,7 @@ namespace DiscordAchievementBot
             
             try
             {
-                // just generate some images
-                ImageGeneration.GenerateImage("AchievementName", 1234, AchievementType.Xbox360, 123);
-                ImageGeneration.GenerateImage("AchievementName", 5, AchievementType.XboxOneRare, 124);
-                ImageGeneration.GenerateImage("AchievementName", 1337, AchievementType.XboxOne, 125);
+                // run the bot
                 new Bot().Start().GetAwaiter().GetResult();
             }
             catch(Exception e)

@@ -19,14 +19,11 @@ namespace DiscordAchievementBot
         [XmlElementAttribute("ImageTemporaryDirectory")]
         public string ImageTemporaryDirectory;
 
-        // xb1 rare achievement image path
-        [XmlElementAttribute("AchievementXboxOneRare")]
-        public string AchievementXboxOneRare;
-        // xb1 regular achievement image path
-        [XmlElementAttribute("AchievementXboxOne")]
-        public string AchievementXboxOne;
-        // xb360 achievement image path
-        [XmlElementAttribute("AchievementXbox360")]
-        public string AchievementXbox360;
+        // paths to the background images for each of the achievement presets
+        // in the Resources folder which should be configured to always copy to output directory
+        public const string Path_AchievementXboxOneBackground = @"Resources\xboxone.png";
+        public const string Path_AchievementXboxOneRareBackground = @"Resources\xboxone.png";
+        public const string Path_AchievementXbox360Background = @"Resources\test.png";
+
     }
 }

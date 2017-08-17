@@ -16,11 +16,16 @@ namespace DiscordAchievementBot
         {
             m_Path = path;
             Load();
+            m_imageGen = new ImageGenerator(m_data);
         }
 
         // configuration
         private Configuration m_data = null;
         public Configuration Data { get { return m_data; } }
+
+        // image generator
+        private ImageGenerator m_imageGen = null;
+        public ImageGenerator ImageGenerator { get { return m_imageGen; } }
 
         // gamer score generator
         private GamerScoreGenerator m_gamerScoreGen = new GamerScoreGenerator();
