@@ -8,12 +8,6 @@ namespace DiscordAchievementBot
 {
     public class GlobalConfiguration
     {
-        // paths to the background images for each of the achievement presets
-        // in the Resources folder which should be configured to always copy to output directory
-        public const string Path_AchievementXboxOneBackground = @"Resources\xboxone.png";
-        public const string Path_AchievementXboxOneRareBackground = @"Resources\xboxone.png";
-        public const string Path_AchievementXbox360Background = @"Resources\test.png";
-
         private string m_Path = null;
 
         private GlobalConfiguration() { }
@@ -22,11 +16,16 @@ namespace DiscordAchievementBot
         {
             m_Path = path;
             Load();
+            m_imageGen = new ImageGenerator(m_data);
         }
 
         // configuration
         private Configuration m_data = null;
         public Configuration Data { get { return m_data; } }
+
+        // image generator
+        private ImageGenerator m_imageGen = null;
+        public ImageGenerator ImageGenerator { get { return m_imageGen; } }
 
         // gamer score generator
         private GamerScoreGenerator m_gamerScoreGen = new GamerScoreGenerator();

@@ -6,18 +6,25 @@ using System.Text;
 
 namespace DiscordAchievementBot
 {
-    public class ImageGeneration
+    public class ImageGenerator
     {
-        public static string GenerateImagePath(ulong imageID)
+        private Configuration m_config;
+
+        public ImageGenerator(Configuration config)
+        {
+            m_config = config;
+        }
+
+        public string GenerateImagePath(ulong imageID)
         {
             // generate path in format
             // %temp%/123456789.png
-            string path = string.Format("{0}{1}.png", Program.GlobalConfig.Data.ImageTemporaryDirectory, imageID);
+            string path = string.Format("{0}achievement{1}.png", m_config.ImageTemporaryDirectory, imageID);
             // expand environment variables
             return Environment.ExpandEnvironmentVariables(path);
         }
 
-        public static void GenerateImage(string achievementName, int gs, AchievementType type, ulong imageID)
+        public void GenerateImage(string achievementName, int gs, AchievementType type, ulong imageID)
         {
             // first determine background image path
             string backgroundImagePath;
@@ -26,13 +33,13 @@ namespace DiscordAchievementBot
             {
                 default:
                 case AchievementType.XboxOne:
-                    backgroundImagePath = GlobalConfiguration.Path_AchievementXboxOneBackground;
+                    backgroundImagePath = Configuration.Path_AchievementXboxOneBackground;
                     break;
                 case AchievementType.XboxOneRare:
-                    backgroundImagePath = GlobalConfiguration.Path_AchievementXboxOneRareBackground;
+                    backgroundImagePath = Configuration.Path_AchievementXboxOneRareBackground;
                     break;
                 case AchievementType.Xbox360:
-                    backgroundImagePath = GlobalConfiguration.Path_AchievementXbox360Background;
+                    backgroundImagePath = Configuration.Path_AchievementXbox360Background;
                     break;
             }
 
@@ -64,7 +71,6 @@ namespace DiscordAchievementBot
                     headerLayer.Annotate("Rare achievement unlocked - " + rarePercent + "%", Gravity.Southwest);
                 }
 
-
                 //placeholder debug stuff
                 //image.Annotate(achievementName, Gravity.North);
                 //image.Annotate(gs.ToString(), Gravity.West);
@@ -80,7 +86,7 @@ namespace DiscordAchievementBot
         /// Deletes an image
         /// </summary>
         /// <param name="messageID"></param>
-        public static void DeleteImage(ulong messageID)
+        public void DeleteImage(ulong messageID)
         {
             File.Delete(GenerateImagePath(messageID));
         }
