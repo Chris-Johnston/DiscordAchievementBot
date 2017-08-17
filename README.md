@@ -1,5 +1,6 @@
 # Discord Achievement Bot
-[![Build status](https://ci.appveyor.com/api/projects/status/9ap9d3d2cb6uw36s/branch/master?svg=true)](https://ci.appveyor.com/project/Chris-Johnston/discordachievementbot/branch/master)
+Master: [![Build status](https://ci.appveyor.com/api/projects/status/9ap9d3d2cb6uw36s/branch/master?svg=true)](https://ci.appveyor.com/project/Chris-Johnston/discordachievementbot/branch/master)
+Current: [![Build status](https://ci.appveyor.com/api/projects/status/9ap9d3d2cb6uw36s?svg=true)](https://ci.appveyor.com/project/Chris-Johnston/discordachievementbot)
 
 A bot that generates Xbox-style achievement popups for a Discord server.
 
@@ -51,12 +52,6 @@ preset works.
 Using this command will mention the user that requested it to indicate that it is processing, and then mention the user again once it is created.
 
 #### Meta commands
-
-```
-+Help
-```
-
-Replies with help text.
 
 ```
 +About
