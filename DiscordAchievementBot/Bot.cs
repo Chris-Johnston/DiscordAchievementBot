@@ -29,7 +29,8 @@ namespace DiscordAchievementBot
             client.Log += Log;
 
             client.Ready += Client_Ready;
-            
+
+            await client.SetGameAsync("Type: +Help");
 
             await Task.Delay(-1);
         }
