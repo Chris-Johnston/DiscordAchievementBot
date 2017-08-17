@@ -110,5 +110,22 @@ namespace DiscordAchievementBot
                 string.Format("Discord Achievement Bot\nhttps://github.com/Chris-Johnston/DiscordAchievementBot");
             await ReplyAsync(aboutText);
         }
+
+        [Command("Help", RunMode = RunMode.Async)]
+        public async Task Help()
+        {
+            string helpText =
+@"List of commands:
+```
++About
++InviteLink
++Generate <text> [score] [type]
+```
+
+An achievement with spaces in it must be surrounded with quotation marks. Valid types are `XboxOne`, `XboxOneRare`, and `Xbox360`.
+Most commands require that you have the permission `Manage Messages`.
+";
+            await ReplyAsync(helpText);
+        }
     }
 }
