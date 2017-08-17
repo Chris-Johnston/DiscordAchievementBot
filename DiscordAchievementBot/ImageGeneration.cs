@@ -26,13 +26,13 @@ namespace DiscordAchievementBot
             {
                 default:
                 case AchievementType.XboxOne:
-                    backgroundImagePath = Program.GlobalConfig.Data.AchievementXboxOne;
+                    backgroundImagePath = GlobalConfiguration.Path_AchievementXboxOneBackground;
                     break;
                 case AchievementType.XboxOneRare:
-                    backgroundImagePath = Program.GlobalConfig.Data.AchievementXboxOneRare;
+                    backgroundImagePath = GlobalConfiguration.Path_AchievementXboxOneRareBackground;
                     break;
                 case AchievementType.Xbox360:
-                    backgroundImagePath = Program.GlobalConfig.Data.AchievementXbox360;
+                    backgroundImagePath = GlobalConfiguration.Path_AchievementXbox360Background;
                     break;
             }
 
