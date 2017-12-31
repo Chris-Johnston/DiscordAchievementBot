@@ -11,4 +11,4 @@ build:
   project: DiscordAchievementBot.sln
   verbosity: minimal
 test_script:
-- cmd: dotnet test .\DiscordAchivementBot.Tests\DiscordAchivementBot.Tests.csproj
+- cmd: dotnet test .\DiscordAchievementBot.Tests\DiscordAchievementBot.Tests.csproj
