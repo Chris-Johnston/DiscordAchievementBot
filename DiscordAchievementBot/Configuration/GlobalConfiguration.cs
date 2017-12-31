@@ -8,6 +8,7 @@ namespace DiscordAchievementBot
 {
     public class GlobalConfiguration
     {
+        public const string CommandPrefix = "++";
         private string m_Path = null;
 
         private GlobalConfiguration() { }

@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,11 +18,15 @@ namespace DiscordAchievementBot
         /// <param name="gamerScore">The score for the achievement</param>
         /// <param name="type"></param>
         /// <returns></returns>
-        [Command("Get", RunMode = RunMode.Async), Alias("Generate"), RequireUserPermission(Discord.GuildPermission.ManageMessages)]
+        [Command("Get", RunMode = RunMode.Async), Alias("Generate", "New")]
+        [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
+        [RequireBotPermission(Discord.GuildPermission.SendMessages)]
         public async Task Get(string achievementName, int gamerScore = -1, AchievementType type = AchievementType.XboxOne)
         {
+            Console.WriteLine($"Generating image for user {Context.User.Id} in guild {Context.Guild.Id}");
+
             // for 'work in progress' patterns, set them to use the one that works
-            bool workInProgress = type == AchievementType.Xbox360 || type == AchievementType.XboxOneRare;
+            bool workInProgress = type == AchievementType.Xbox360;
             if (workInProgress)
                 type = AchievementType.XboxOne;
 
@@ -40,16 +45,14 @@ namespace DiscordAchievementBot
             }
 
             // tell the user that I'm working on it
-            Discord.IUserMessage ack = await ReplyAsync("Right away, " + Context.User.Mention + "!");
+            IUserMessage ack = await ReplyAsync("Right away, " + Context.User.Mention + "!");
 
             // actually go and generate this
             Program.GlobalConfig.ImageGenerator.GenerateImage(achievementName, gamerScore, type, Context.Message.Id);
 
             // remove the ack once file has been generated
             // gotta be a better way for this
-            List<Discord.IUserMessage> del = new List<Discord.IUserMessage>();
-            del.Add(ack);
-            await Context.Channel.DeleteMessagesAsync(del);
+            await ack.DeleteAsync();
 
             // tell the user if the pattern they chose is WIP
             string prefix = "";
@@ -76,34 +79,42 @@ namespace DiscordAchievementBot
             }
         }
 
-
+        ///// <summary>
+        ///// Ping/Pong Command
+        ///// Replies back instantly with "Pong!"
+        ///// </summary>
+        ///// <returns></returns>
+        //[Command("Ping", RunMode = RunMode.Async)]
+        //[RequireUserPermission(GuildPermission.ManageMessages)]
+        //[RequireBotPermission(GuildPermission.SendMessages)]
+        //[Remarks("A simple ping/pong test command.")]
+        //public async Task Ping()
+        //{
+        //    await ReplyAsync("Pong!");
+        //}
 
         /// <summary>
-        /// Ping/Pong Command
-        /// Replies back instantly with "Pong!"
+        /// Replies back with the Invite URL for the current user
         /// </summary>
         /// <returns></returns>
-        [Command("Ping", RunMode = RunMode.Async), 
-            RequireUserPermission(Discord.GuildPermission.ManageMessages),
-            Remarks("A simple ping/pong test command."),
-            Priority(0) ]
-        public async Task Ping()
-        {
-            /*
-            * RequireUserPermission(Discord.GuildPermission.Administrator)
-            * RequireUserPermission(Discord.GuildPermission.ManageChannels)
-            */
-            await ReplyAsync("Pong!");
-        }
-
-        [Command("InviteLink", RunMode = RunMode.Async), Alias("Invite"), RequireUserPermission(Discord.GuildPermission.ManageMessages)]
+        [Command("InviteLink", RunMode = RunMode.Async)]
+        [Alias("Invite")]
+        [RequireUserPermission(GuildPermission.ManageMessages)]
+        [RequireBotPermission(GuildPermission.SendMessages)]
         public async Task GetInviteLink()
         {
-            string link = string.Format(@"Invite URL: <https://discordapp.com/oauth2/authorize?client_id={0}&scope=bot>", Context.Client.CurrentUser.Id);
+            string link = string.Format(@"Add me to a server with the following URL: <https://discordapp.com/oauth2/authorize?client_id={0}&scope=bot>", Context.Client.CurrentUser.Id);
             await ReplyAsync(link);
         }
 
-        [Command("About", RunMode = RunMode.Async), Alias("GitHub"), RequireUserPermission(Discord.GuildPermission.ManageMessages)]
+        /// <summary>
+        /// Replies back with about text for the bot, links back to the GitHub page
+        /// </summary>
+        /// <returns></returns>
+        [Command("About", RunMode = RunMode.Async)]
+        [Alias("GitHub", "Source")]
+        [RequireUserPermission(GuildPermission.ManageMessages)]
+        [RequireBotPermission(GuildPermission.SendMessages)]
         public async Task About()
         {
             string aboutText =
@@ -111,19 +122,25 @@ namespace DiscordAchievementBot
             await ReplyAsync(aboutText);
         }
 
+        /// <summary>
+        /// Replies back with some help text
+        /// </summary>
+        /// <returns></returns>
         [Command("Help", RunMode = RunMode.Async)]
         public async Task Help()
         {
             string helpText =
-@"List of commands:
+@"
 ```
-+About
-+InviteLink
-+Generate <text> [score] [type]
+++About
+++InviteLink
+++Generate <text> [score] [type]
 ```
-
 An achievement with spaces in it must be surrounded with quotation marks. Valid types are `XboxOne`, `XboxOneRare`, and `Xbox360`.
 Most commands require that you have the permission `Manage Messages`.
+
+Example:
+`++Generate ""Opened the README"" 999 XboxOne`
 ";
             await ReplyAsync(helpText);
         }
