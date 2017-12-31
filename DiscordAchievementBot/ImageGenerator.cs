@@ -59,16 +59,15 @@ namespace DiscordAchievementBot
                 if (type == AchievementType.XboxOne || type == AchievementType.Xbox360)
                 {
                     string s = string.Format("{0} - {1}", gs.ToString(), achievementName);
-                    //headerLayer.Annotate(s, new MagickGeometry(185,27,400,80), Gravity.West);
-                    //headerLayer.Annotate(s, new MagickGeometry(225, 27, 400, 80), Gravity.West);
-                    headerLayer.Annotate(s, new MagickGeometry(225, 30, 400, 80), Gravity.West);
+                    headerLayer.Annotate(s, new MagickGeometry(225, 30, 700, 80), Gravity.West);
                 }
                 else if (type == AchievementType.XboxOneRare)
                 {
                     int rarePercent;
                     Random r = new Random();
                     rarePercent = r.Next(1, 5);
-                    headerLayer.Annotate("Rare achievement unlocked - " + rarePercent + "%", Gravity.Southwest);
+                    headerLayer.Annotate("Rare achievement unlocked - " + rarePercent + "%", new MagickGeometry(155,5,400,70), Gravity.West);
+                    headerLayer.Annotate($"{gs} - {achievementName}", new MagickGeometry(195, 55, 400, 70), Gravity.West);
                 }
 
                 //placeholder debug stuff
