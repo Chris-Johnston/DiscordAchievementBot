@@ -46,6 +46,9 @@ namespace DiscordAchievementBot
             // If the command failed
             if (!result.IsSuccess)
             {
+                // result.Error will be unmetpreconditions if doesn't have permissions to attach files
+                // could maybe prompt back about it
+
                 // log the error
                 Discord.LogMessage errorMessage = new Discord.LogMessage(Discord.LogSeverity.Warning, "CommandHandler", result.ErrorReason);
                 await Bot.Log(errorMessage);
