@@ -16,8 +16,7 @@ namespace DiscordAchievementBot
         public async Task Start()
         {
             // define DiscordSocketClient
-
-            client = new DiscordSocketClient(new DiscordSocketConfig() { LogLevel = Discord.LogSeverity.Debug });
+            client = new DiscordSocketClient(new DiscordSocketConfig() { LogLevel = Discord.LogSeverity.Warning });
 
             // log in
             await client.LoginAsync(Discord.TokenType.Bot, Program.GlobalConfig.Data.ConnectionToken);
@@ -27,12 +26,19 @@ namespace DiscordAchievementBot
             await handler.Install(client);
 
             client.Log += Log;
-
             client.Ready += Client_Ready;
+            client.GuildAvailable += Client_GuildAvailable;
 
-            await client.SetGameAsync("Type: +Help");
+            Console.WriteLine($"Part of {client.Guilds.Count} guilds.");
+
+            await client.SetGameAsync($"Type: {GlobalConfiguration.CommandPrefix}Help");
 
             await Task.Delay(-1);
+        }
+
+        private async Task Client_GuildAvailable(SocketGuild arg)
+        {
+            Console.WriteLine($"Connected to guild {arg.Name} - {arg.Id}");
         }
 
         private async Task Client_Ready()
@@ -40,6 +46,7 @@ namespace DiscordAchievementBot
             var application = await client.GetApplicationInfoAsync();
             await Log(new LogMessage(LogSeverity.Info, "Program",
                 $"Invite URL: <https://discordapp.com/oauth2/authorize?client_id={application.Id}&scope=bot>"));
+            Console.WriteLine($"Invite URL: <https://discordapp.com/oauth2/authorize?client_id={application.Id}&scope=bot>");
         }
 
         public async static Task Log(Discord.LogMessage arg)
