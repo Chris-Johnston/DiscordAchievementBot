@@ -22,15 +22,7 @@ A bot that generates Xbox-style achievement popups for a Discord server.
 
 ## Commands
 
-_All commands must begin with the command prefix `+`, or must involve @Mentioning the bot._
-
-Example:
-
-```
-+Ping
-
-@AchievementBot Ping
-```
+_All commands must begin with the command prefix `++`, or must involve @Mentioning the bot._
 
 #### Generate Command
 
@@ -41,13 +33,12 @@ Example:
 ```
 
 Achievement text that contains whitespace must be surrounded with quotes. Currently,
-no emoji are supported, built-in or custom.
+no emotes are supported, including both unicode and guild emotes.
 
 The numeric gamerscore must be an integer number.
 
 The last parameter specifies the style. Either `XboxOne` `XboxOneRare` or `Xbox360`,
-which will generate a differently styled image. Currently only the `XboxOne`
-preset works.
+which will generate different styles of images. The `Xbox360` preset is not done yet.
 
 Using this command will mention the user that requested it to indicate that it is processing, and then mention the user again once it is created.
 
@@ -70,12 +61,6 @@ Replies with some meta information about the bot.
 ```
 
 Replies with the invite link for the bot.
-
-```
-+Ping
-```
-
-Replies back with "Pong!".
 
 
 ## Permissions
