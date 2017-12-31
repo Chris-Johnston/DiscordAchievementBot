@@ -43,6 +43,8 @@ namespace DiscordAchievementBot
                     break;
             }
 
+            MagickNET.SetTempDirectory("%TEMP%");
+
             // now do stuff with the image
             using (MagickImage image = new MagickImage(backgroundImagePath))
             {
