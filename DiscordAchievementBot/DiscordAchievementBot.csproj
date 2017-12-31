@@ -5,15 +5,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <RuntimeIdentifiers>win7-x64</RuntimeIdentifiers>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\xboxone.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\xboxone.png" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="1.0.2" />
     <PackageReference Include="Discord.Net.Commands" Version="1.0.2" />

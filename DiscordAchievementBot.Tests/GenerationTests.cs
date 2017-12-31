@@ -1,6 +1,8 @@
 using System;
 using DiscordAchievementBot;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace DiscordAchivementBot.Tests
 {
@@ -15,7 +17,7 @@ namespace DiscordAchivementBot.Tests
             // make the configuration that ImageGenerator needs
             Configuration config = new Configuration()
             {
-                ConnectionToken = "1234", ImageTemporaryDirectory = @"%temp%\"
+                ConnectionToken = "1234", ImageTemporaryDirectory = Directory.GetCurrentDirectory()
             };
 
             m_generator = new ImageGenerator(config);
@@ -24,19 +26,24 @@ namespace DiscordAchivementBot.Tests
         [TestMethod]
         public void TestPath()
         {
+            string p = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar;
+
             // test that the path is being generated correctly
             string path = m_generator.GenerateImagePath(123);
-            string correctPath = System.Environment.ExpandEnvironmentVariables(@"%temp%\");
+            string correctPath = System.Environment.ExpandEnvironmentVariables(p);
             correctPath += "achievement123.png";
             Assert.AreEqual(path, correctPath);
 
             string path2 = m_generator.GenerateImagePath(18446744073709551615);
-            string correctPath2 = System.Environment.ExpandEnvironmentVariables(@"%temp%\");
+            string correctPath2 = System.Environment.ExpandEnvironmentVariables(p);
             correctPath2 += "achievement18446744073709551615.png";
             Assert.AreEqual(path2, correctPath2);
         }
 
         [TestMethod]
+        [DeploymentItem(@"Resources\xboxone.png", @"Resources")]
+        [DeploymentItem(@"Resources\xboxonerare.png", @"Resources")]
+        [DeploymentItem(@"Resources\test.png", @"Resources")]
         public void GenerateTest()
         {
             try
@@ -81,14 +88,15 @@ namespace DiscordAchivementBot.Tests
             {
                 // create image id 123
                 m_generator.GenerateImage("TEST!", 123, AchievementType.XboxOne, 123);
-                
+
                 // delete image id 123
                 m_generator.DeleteImage(123);
 
                 Assert.IsTrue(true);
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 Assert.Fail();
             }
 

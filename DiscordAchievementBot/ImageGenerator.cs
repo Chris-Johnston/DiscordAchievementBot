@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace DiscordAchievementBot
@@ -18,8 +19,8 @@ namespace DiscordAchievementBot
         public string GenerateImagePath(ulong imageID)
         {
             // generate path in format
-            // %temp%/123456789.png
-            string path = string.Format("{0}achievement{1}.png", m_config.ImageTemporaryDirectory, imageID);
+            // %path%/123456789.png
+            string path = Path.Combine(m_config.ImageTemporaryDirectory, $"achievement{imageID}.png");
             // expand environment variables
             return Environment.ExpandEnvironmentVariables(path);
         }
@@ -43,43 +44,47 @@ namespace DiscordAchievementBot
                     break;
             }
 
-            MagickNET.SetTempDirectory("%TEMP%");
+            // passing the relative path was breaking it, so now just going to pass it the file stream instead
+            string path = Path.Combine(Directory.GetCurrentDirectory(), backgroundImagePath);
 
-            // now do stuff with the image
-            using (MagickImage image = new MagickImage(backgroundImagePath))
+            using (var backgroundStream = new FileStream(path, FileMode.Open))
             {
-                MagickImage headerLayer = new MagickImage(MagickColor.FromRgba(0, 0, 0, 0), image.Width, image.Height);
-
-                if (type == AchievementType.XboxOne || type == AchievementType.XboxOneRare)
+                // now do stuff with the image
+                using (MagickImage image = new MagickImage(backgroundImagePath))
                 {
-                    headerLayer.Settings.FontFamily = "Segoe UI";
-                    headerLayer.Settings.FontPointsize = 36;
-                    headerLayer.Settings.TextGravity = Gravity.Southwest;
-                    headerLayer.Settings.FillColor = MagickColor.FromRgb(255, 255, 255);
+                    MagickImage headerLayer = new MagickImage(MagickColor.FromRgba(0, 0, 0, 0), image.Width, image.Height);
+
+                    if (type == AchievementType.XboxOne || type == AchievementType.XboxOneRare)
+                    {
+                        headerLayer.Settings.FontFamily = "Segoe UI";
+                        headerLayer.Settings.FontPointsize = 36;
+                        headerLayer.Settings.TextGravity = Gravity.Southwest;
+                        headerLayer.Settings.FillColor = MagickColor.FromRgb(255, 255, 255);
+                    }
+
+                    if (type == AchievementType.XboxOne || type == AchievementType.Xbox360)
+                    {
+                        string s = string.Format("{0} - {1}", gs.ToString(), achievementName);
+                        headerLayer.Annotate(s, new MagickGeometry(225, 30, 700, 80), Gravity.West);
+                    }
+                    else if (type == AchievementType.XboxOneRare)
+                    {
+                        int rarePercent;
+                        Random r = new Random();
+                        rarePercent = r.Next(1, 5);
+                        headerLayer.Annotate("Rare achievement unlocked - " + rarePercent + "%", new MagickGeometry(155, 5, 400, 70), Gravity.West);
+                        headerLayer.Annotate($"{gs} - {achievementName}", new MagickGeometry(195, 55, 400, 70), Gravity.West);
+                    }
+
+                    //placeholder debug stuff
+                    //image.Annotate(achievementName, Gravity.North);
+                    //image.Annotate(gs.ToString(), Gravity.West);
+                    //image.Annotate(type.ToString(), Gravity.East);
+
+                    image.Composite(headerLayer, CompositeOperator.Over);
+
+                    image.Write(GenerateImagePath(imageID));
                 }
-
-                if (type == AchievementType.XboxOne || type == AchievementType.Xbox360)
-                {
-                    string s = string.Format("{0} - {1}", gs.ToString(), achievementName);
-                    headerLayer.Annotate(s, new MagickGeometry(225, 30, 700, 80), Gravity.West);
-                }
-                else if (type == AchievementType.XboxOneRare)
-                {
-                    int rarePercent;
-                    Random r = new Random();
-                    rarePercent = r.Next(1, 5);
-                    headerLayer.Annotate("Rare achievement unlocked - " + rarePercent + "%", new MagickGeometry(155,5,400,70), Gravity.West);
-                    headerLayer.Annotate($"{gs} - {achievementName}", new MagickGeometry(195, 55, 400, 70), Gravity.West);
-                }
-
-                //placeholder debug stuff
-                //image.Annotate(achievementName, Gravity.North);
-                //image.Annotate(gs.ToString(), Gravity.West);
-                //image.Annotate(type.ToString(), Gravity.East);
-
-                image.Composite(headerLayer, CompositeOperator.Over);
-
-                image.Write(GenerateImagePath(imageID));
             }
         }
 
