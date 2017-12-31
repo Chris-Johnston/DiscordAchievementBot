@@ -8,7 +8,7 @@ A bot that generates Xbox-style achievement popups for a Discord server.
 
 ## How to Use
 
-**Server Owners**: [You can add this bot to your server using this link](https://discordapp.com/oauth2/authorize?client_id=347632041300328459&scope=bot).
+**Server Owners**: [You can add this bot to your server using this link][InviteLink].
 
 **Developers/Contributors**:
 
@@ -27,9 +27,9 @@ _All commands must begin with the command prefix `++`, or must involve @Mentioni
 #### Generate Command
 
 ```
-+Get
+++Get
 
-+Generate "Your Achievement Text" [Numeric Gamerscore] [XboxOne|XboxOneRare|Xbox360]
+++Generate "Your Achievement Text" [Numeric Gamerscore] [XboxOne|XboxOneRare|Xbox360]
 ```
 
 Achievement text that contains whitespace must be surrounded with quotes. Currently,
@@ -45,19 +45,19 @@ Using this command will mention the user that requested it to indicate that it i
 #### Meta commands
 
 ```
-+Help
+++Help
 ```
 
 Replies with help information.
 
 ```
-+About
+++About
 ```
 
 Replies with some meta information about the bot.
 
 ```
-+InviteLink
+++InviteLink
 ```
 
 Replies with the invite link for the bot.
@@ -69,14 +69,13 @@ Replies with the invite link for the bot.
 
 The bot requires the following permissions:
 
-- Read Messages (So the bot can get commands.)
-- Send Messages (So the commands do something.)
+- Read Messages (So the bot can receive commands.)
+- Send Messages (So the bot can reply to commands.)
 - Attach Files (So the bot can include images.)
 
 **Permissions for User**
 
-Users who wish to use the bot require only one permission:
-
-- Manage Messages (So that the user can delete the messages. This bot is meant to be reserved for moderators/admins, for special uses.)
+Users do not require any permissions.
 
 [ExampleGif]: http://i.imgur.com/9lzwx6j.gif
+[InviteLink]: https://discordapp.com/oauth2/authorize?client_id=347632041300328459&scope=bot&permissions=35840
