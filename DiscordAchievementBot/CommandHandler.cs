@@ -36,7 +36,7 @@ namespace DiscordAchievementBot
             // Determine if the message has a valid prefix, adjust argPos 
 
             //todo update command handler stuff
-            if (!(message.HasMentionPrefix(m_client.CurrentUser, ref argPos) || message.HasCharPrefix('+', ref argPos))) return;
+            if (!(message.HasMentionPrefix(m_client.CurrentUser, ref argPos) || message.HasStringPrefix(GlobalConfiguration.CommandPrefix, ref argPos))) return;
 
             // Create a Command Context
             var context = new CommandContext(m_client, message);
