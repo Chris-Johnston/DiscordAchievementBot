@@ -19,8 +19,7 @@ namespace DiscordAchievementBot
         /// <param name="type"></param>
         /// <returns></returns>
         [Command("Get", RunMode = RunMode.Async), Alias("Generate", "New")]
-        [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
-        [RequireBotPermission(Discord.GuildPermission.SendMessages)]
+        [RequireBotPermission(GuildPermission.SendMessages | GuildPermission.AttachFiles)]
         public async Task Get(string achievementName, int gamerScore = -1, AchievementType type = AchievementType.XboxOne)
         {
             Console.WriteLine($"Generating image for user {Context.User.Id} in guild {Context.Guild.Id}");
@@ -99,7 +98,6 @@ namespace DiscordAchievementBot
         /// <returns></returns>
         [Command("InviteLink", RunMode = RunMode.Async)]
         [Alias("Invite")]
-        [RequireUserPermission(GuildPermission.ManageMessages)]
         [RequireBotPermission(GuildPermission.SendMessages)]
         public async Task GetInviteLink()
         {
@@ -113,7 +111,6 @@ namespace DiscordAchievementBot
         /// <returns></returns>
         [Command("About", RunMode = RunMode.Async)]
         [Alias("GitHub", "Source")]
-        [RequireUserPermission(GuildPermission.ManageMessages)]
         [RequireBotPermission(GuildPermission.SendMessages)]
         public async Task About()
         {
@@ -137,7 +134,6 @@ namespace DiscordAchievementBot
 ++Generate <text> [score] [type]
 ```
 An achievement with spaces in it must be surrounded with quotation marks. Valid types are `XboxOne`, `XboxOneRare`, and `Xbox360`.
-Most commands require that you have the permission `Manage Messages`.
 
 Example:
 `++Generate ""Opened the README"" 999 XboxOne`
