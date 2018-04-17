@@ -29,7 +29,7 @@ namespace DiscordAchievementBot
             client.Ready += Client_Ready;
             client.GuildAvailable += Client_GuildAvailable;
 
-            Console.WriteLine($"Part of {client.Guilds.Count} guilds.");
+            
 
             await client.SetGameAsync($"Type: {GlobalConfiguration.CommandPrefix}Help");
 
@@ -38,11 +38,13 @@ namespace DiscordAchievementBot
 
         private async Task Client_GuildAvailable(SocketGuild arg)
         {
-            Console.WriteLine($"Connected to guild {arg.Name} - {arg.Id}");
+            Console.WriteLine($"Connected to guild {arg.Name} with {arg.MemberCount} members. ID {arg.Id}");
         }
 
         private async Task Client_Ready()
         {
+            Console.WriteLine($"Part of {client.Guilds.Count} guilds.");
+
             var application = await client.GetApplicationInfoAsync();
             await Log(new LogMessage(LogSeverity.Info, "Program",
                 $"Invite URL: <https://discordapp.com/oauth2/authorize?client_id={application.Id}&scope=bot>"));
