@@ -2,7 +2,7 @@
   "profiles": {
     "DiscordAchievementBot": {
       "commandName": "Project",
-      "commandLineArgs": "-config=D:\\achievementconfig.xml"
+      "commandLineArgs": "-config=C:\\config\\achievementbotconfig.xml"
     }
   }
 }

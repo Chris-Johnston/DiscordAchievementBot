@@ -11,7 +11,7 @@ namespace DiscordAchievementBot
     /// </summary>
     class AchievementTypeReader : TypeReader
     {
-        public override Task<TypeReaderResult> Read(ICommandContext context, string input, IServiceProvider services)
+        public override Task<TypeReaderResult> ReadAsync(ICommandContext context, string input, IServiceProvider services)
         {
             AchievementType ret;
             if(Enum.TryParse(input, out ret))
