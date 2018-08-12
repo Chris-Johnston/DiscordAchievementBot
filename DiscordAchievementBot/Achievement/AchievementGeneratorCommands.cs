@@ -3,6 +3,7 @@ using Discord.Commands;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DiscordAchievementBot
@@ -10,20 +11,72 @@ namespace DiscordAchievementBot
     [Group(""), Remarks("Commands for Achievement Generator.")]
     public class AchievementGeneratorCommands : ModuleBase
     {
+        private readonly ImageGenerator imageGenerator;
+        private readonly GamerScoreGenerator gamerScoreGenerator;
+
+        public AchievementGeneratorCommands(ImageGenerator imageGenerator, GamerScoreGenerator gamerScoreGenerator)
+        {
+            this.imageGenerator = imageGenerator;
+            this.gamerScoreGenerator = gamerScoreGenerator;
+        }
+
+        [Command("Get"), Alias("Generate", "New", "Gen")]
+        [RequireBotPermission(GuildPermission.SendMessages | GuildPermission.AttachFiles)]
+        [Priority(2)]
+        public async Task GenerateHelp()
+        {
+            await ReplyAsync(message: "**Generate**\n" +
+                "Example: `++Generate \"Read the Docs\" 100 XboxOne`\n" +
+                "`++Generate <achievement text> [score] [type]`\n" +
+                "Valid types are `XboxOne`, `XboxOneRare`, and `Xbox360`.").ConfigureAwait(false);
+        }
+
+        [Command("Get", RunMode = RunMode.Async), Alias("Generate", "New", "Gen")]
+        [RequireBotPermission(GuildPermission.SendMessages | GuildPermission.AttachFiles)]
+        [Priority(10)]
+        public async Task GetNoParameters([Remainder] string name)
+        {
+            await Get(-1, AchievementType.XboxOne, name).ConfigureAwait(false);
+        }
+
+        [Command("Get", RunMode = RunMode.Async), Alias("Generate", "New", "Gen")]
+        [RequireBotPermission(GuildPermission.SendMessages | GuildPermission.AttachFiles)]
+        [Priority(11)]
+        public async Task GetOnlyScore(long score, [Remainder] string name)
+        {
+            await Get(score, AchievementType.XboxOne, name).ConfigureAwait(false);
+        }
+
+        [Command("Get", RunMode = RunMode.Async), Alias("Generate", "New", "Gen")]
+        [RequireBotPermission(GuildPermission.SendMessages | GuildPermission.AttachFiles)]
+        [Priority(11)]
+        public async Task GetAchievementType(AchievementType type, [Remainder] string name)
+        {
+            await Get(-1, type, name).ConfigureAwait(false);
+        }
+
+        [Command("Get", RunMode = RunMode.Async), Alias("Generate", "New", "Gen")]
+        [RequireBotPermission(GuildPermission.SendMessages | GuildPermission.AttachFiles)]
+        [Priority(50)]
+        public async Task Get(AchievementType type, long gamerScore, [Remainder] string achievementName)
+        {
+            await Get(gamerScore, type, achievementName).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Generate Commmand
         /// Replies to the user with the image they want to generate
         /// </summary>
         /// <param name="achievementName">The name of the achievement</param>
         /// <param name="gamerScore">The score for the achievement</param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        [Command("Get", RunMode = RunMode.Async), Alias("Generate", "New")]
+        /// <param name="type">The type of image to generate, converted with <see cref="AchievementTypeReader"/></param>
+        [Command("Get", RunMode = RunMode.Async), Alias("Generate", "New", "Gen")]
         [RequireBotPermission(GuildPermission.SendMessages | GuildPermission.AttachFiles)]
-        public async Task Get(string achievementName, int gamerScore = -1, AchievementType type = AchievementType.XboxOne)
+        [Priority(50)]
+        public async Task Get(long gamerScore, AchievementType type, [Remainder] string achievementName)
         {
-            Console.WriteLine($"Generating image for user {Context.User.Id} in guild {Context.Guild.Id}");
-
+            Bot.Log(new LogMessage(LogSeverity.Debug, "AchievementGeneratorCommands", $"Generating image for user {Context.User.Id} in {Context.Guild.Id}"));
+            
             // for 'work in progress' patterns, set them to use the one that works
             bool workInProgress = type == AchievementType.Xbox360;
             if (workInProgress)
@@ -35,23 +88,30 @@ namespace DiscordAchievementBot
                 // use a rare score
                 if (type == AchievementType.XboxOneRare)
                 {
-                    gamerScore = Program.GlobalConfig.GamerScoreGenerator.GetRareGamerScore();
+                    gamerScore = gamerScoreGenerator.GetRareGamerScore;
                 }
                 else
                 {
-                    gamerScore = Program.GlobalConfig.GamerScoreGenerator.GetGamerScore();
+                    gamerScore = gamerScoreGenerator.GetGamerScore;
                 }
             }
 
             // tell the user that I'm working on it
-            IUserMessage ack = await ReplyAsync("Right away, " + Context.User.Mention + "!");
+            IUserMessage ack = await ReplyAsync($"Right away, {Context.User.Mention}!").ConfigureAwait(true);
 
-            // actually go and generate this
-            Program.GlobalConfig.ImageGenerator.GenerateImage(achievementName, gamerScore, type, Context.Message.Id);
+            await Task.Factory.StartNew(action: () =>
+            {   
+                // actually go and generate this
+                imageGenerator.GenerateImage(achievementName, gamerScore, type, Context.Message.Id);
+            }, 
+            cancellationToken: CancellationToken.None,
+            creationOptions: TaskCreationOptions.None,
+            scheduler: TaskScheduler.Default)
+            .ConfigureAwait(false);            
 
             // remove the ack once file has been generated
             // gotta be a better way for this
-            await ack.DeleteAsync();
+            await ack.DeleteAsync().ConfigureAwait(true);
 
             // tell the user if the pattern they chose is WIP
             string prefix = "";
@@ -61,68 +121,54 @@ namespace DiscordAchievementBot
             }
 
             // reply with the image and some text
-            await Context.Channel.SendFileAsync(Program.GlobalConfig.ImageGenerator.GenerateImagePath(Context.Message.Id), prefix + "Generated by " + Context.User.Mention + ".");
+            await Context.Channel.SendFileAsync(
+                imageGenerator.GenerateImagePath(Context.Message.Id), 
+                $"{prefix}Generated by {Context.User.Mention}.").ConfigureAwait(true);
 
             // wait a second
-            await Task.Delay(1000);
+            await Task.Delay(1000).ConfigureAwait(true);
 
-            // delete that old image
+            // delete that old image from disk
             try
             {
-                Program.GlobalConfig.ImageGenerator.DeleteImage(Context.Message.Id);
+                imageGenerator.DeleteImage(Context.Message.Id);
             }
             catch (Exception e)
             {
-                // do something
-                Console.WriteLine("couldn't delete " + e.ToString());
+                // log errors when trying to delete the acknowledgement message
+                Bot.Log(new LogMessage(LogSeverity.Warning, "AchievementGeneratorCommands", "Couldn't delete the message acknowledge message.", e));
             }
         }
-
-        ///// <summary>
-        ///// Ping/Pong Command
-        ///// Replies back instantly with "Pong!"
-        ///// </summary>
-        ///// <returns></returns>
-        //[Command("Ping", RunMode = RunMode.Async)]
-        //[RequireUserPermission(GuildPermission.ManageMessages)]
-        //[RequireBotPermission(GuildPermission.SendMessages)]
-        //[Remarks("A simple ping/pong test command.")]
-        //public async Task Ping()
-        //{
-        //    await ReplyAsync("Pong!");
-        //}
 
         /// <summary>
         /// Replies back with the Invite URL for the current user
         /// </summary>
-        /// <returns></returns>
         [Command("InviteLink", RunMode = RunMode.Async)]
         [Alias("Invite")]
         [RequireBotPermission(GuildPermission.SendMessages)]
         public async Task GetInviteLink()
         {
-            string link = string.Format(@"Add me to a server with the following URL: <https://discordapp.com/oauth2/authorize?client_id={0}&scope=bot>", Context.Client.CurrentUser.Id);
-            await ReplyAsync(link);
+            var link = $"Add me to a server with the following URL: https://discordapp.com/oauth2/authorize?client_id={Context.Client.CurrentUser.Id}&scope=bot";
+            await ReplyAsync(link).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Replies back with about text for the bot, links back to the GitHub page
         /// </summary>
-        /// <returns></returns>
         [Command("About", RunMode = RunMode.Async)]
         [Alias("GitHub", "Source")]
         [RequireBotPermission(GuildPermission.SendMessages)]
         public async Task About()
         {
-            string aboutText =
-                string.Format("Discord Achievement Bot\nhttps://github.com/Chris-Johnston/DiscordAchievementBot");
-            await ReplyAsync(aboutText);
+            var aboutText = "Discord Achievement Bot\n" +
+                "I'm Open Source Software! View source and contribute at: " +
+                "https://github.com/Chris-Johnston/DiscordAchievementBot";
+            await ReplyAsync(aboutText).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Replies back with some help text
         /// </summary>
-        /// <returns></returns>
         [Command("Help", RunMode = RunMode.Async)]
         public async Task Help()
         {
@@ -138,7 +184,7 @@ An achievement with spaces in it must be surrounded with quotation marks. Valid 
 Example:
 `++Generate ""Opened the README"" 999 XboxOne`
 ";
-            await ReplyAsync(helpText);
+            await ReplyAsync(helpText).ConfigureAwait(false);
         }
     }
 }

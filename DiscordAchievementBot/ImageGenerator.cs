@@ -9,7 +9,9 @@ namespace DiscordAchievementBot
 {
     public class ImageGenerator
     {
-        private Configuration m_config;
+        private readonly Configuration m_config;
+
+        public int GenerationCounter { get; private set; } = 0;
 
         public ImageGenerator(Configuration config)
         {
@@ -25,22 +27,21 @@ namespace DiscordAchievementBot
             return Environment.ExpandEnvironmentVariables(path);
         }
 
-        public void GenerateImage(string achievementName, int gs, AchievementType type, ulong imageID)
+        public void GenerateImage(string achievementName, long gs, AchievementType type, ulong imageID)
         {
             // first determine background image path
             string backgroundImagePath;
 
             switch(type)
             {
-                default:
-                case AchievementType.XboxOne:
-                    backgroundImagePath = Configuration.Path_AchievementXboxOneBackground;
-                    break;
                 case AchievementType.XboxOneRare:
-                    backgroundImagePath = Configuration.Path_AchievementXboxOneRareBackground;
+                    backgroundImagePath = Configuration.PathAchievementXboxOneRareBackground;
                     break;
                 case AchievementType.Xbox360:
-                    backgroundImagePath = Configuration.Path_AchievementXbox360Background;
+                    backgroundImagePath = Configuration.PathAchievementXbox360Background;
+                    break;
+                default:
+                    backgroundImagePath = Configuration.PathAchievementXboxOneBackground;
                     break;
             }
 
@@ -64,7 +65,7 @@ namespace DiscordAchievementBot
 
                     if (type == AchievementType.XboxOne || type == AchievementType.Xbox360)
                     {
-                        string s = string.Format("{0} - {1}", gs.ToString(), achievementName);
+                        var s = $"{gs} - {achievementName}";
                         headerLayer.Annotate(s, new MagickGeometry(225, 30, 700, 80), Gravity.West);
                     }
                     else if (type == AchievementType.XboxOneRare)
@@ -76,16 +77,12 @@ namespace DiscordAchievementBot
                         headerLayer.Annotate($"{gs} - {achievementName}", new MagickGeometry(195, 55, 400, 70), Gravity.West);
                     }
 
-                    //placeholder debug stuff
-                    //image.Annotate(achievementName, Gravity.North);
-                    //image.Annotate(gs.ToString(), Gravity.West);
-                    //image.Annotate(type.ToString(), Gravity.East);
-
                     image.Composite(headerLayer, CompositeOperator.Over);
-
                     image.Write(GenerateImagePath(imageID));
                 }
             }
+            // increment the generation counter
+            GenerationCounter++;
         }
 
         /// <summary>

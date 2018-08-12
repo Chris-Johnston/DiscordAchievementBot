@@ -80,6 +80,10 @@ namespace DiscordAchivementBot.Tests
             }
         }
 
+        /// <summary>
+        /// Tests that an image can be generated and then deleted without throwing any exceptions.
+        /// Tests that the file is actually removed by attempting to delete again.
+        /// </summary>
         [TestMethod]
         public void DeleteTest()
         {

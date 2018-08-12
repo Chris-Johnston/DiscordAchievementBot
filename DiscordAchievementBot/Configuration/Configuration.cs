@@ -10,20 +10,24 @@ namespace DiscordAchievementBot
     public class Configuration
     {
         /// <summary>
-        /// Connection token for this bot user
+        /// Connection token for this bot user.
         /// </summary>
-        [XmlElementAttribute("ConnectionToken")]
-        public string ConnectionToken;
+        [XmlElement("ConnectionToken")]
+        public string ConnectionToken { get; set; }
 
-        // image stuff
-        [XmlElementAttribute("ImageTemporaryDirectory")]
-        public string ImageTemporaryDirectory;
+        /// <summary>
+        /// The location where the images will be stored temporariliy on disk before being 
+        /// deleted.
+        /// Typically, this is set to %TEMP%.
+        /// </summary>
+        [XmlElement("ImageTemporaryDirectory")]
+        public string ImageTemporaryDirectory { get; set; }
 
         // paths to the background images for each of the achievement presets
         // in the Resources folder which should be configured to always copy to output directory
-        public const string Path_AchievementXboxOneBackground = @"Resources\xboxone.png";
-        public const string Path_AchievementXboxOneRareBackground = @"Resources\xboxonerare.png";
-        public const string Path_AchievementXbox360Background = @"Resources\test.png";
+        public const string PathAchievementXboxOneBackground = @"Resources\xboxone.png";
+        public const string PathAchievementXboxOneRareBackground = @"Resources\xboxonerare.png";
+        public const string PathAchievementXbox360Background = @"Resources\test.png";
 
     }
 }

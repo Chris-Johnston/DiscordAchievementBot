@@ -1,31 +1,32 @@
-﻿using System;
+﻿using Discord;
+using System;
 using System.Reflection;
 
 namespace DiscordAchievementBot
 {
-    class Program
+    public static class Program
     {
         private static string m_ConfigFile = null;
-        public static GlobalConfiguration GlobalConfig = null;
+        public static GlobalConfiguration GlobalConfig { get; private set; }
         
         static void Main(string[] args)
         {
-            Console.WriteLine("Discord Achievement Bot");
-            Console.WriteLine("Version: " + Assembly.GetEntryAssembly().GetName().Version.ToString());
-
+            Bot.Log(new LogMessage(LogSeverity.Info, "Program", "Discord Achievement Bot"));
+            Bot.Log(new LogMessage(LogSeverity.Debug, "Program", $"Version {Assembly.GetEntryAssembly().GetName().Version}"));
+            
             foreach(string arg in args)
             {
-                if(arg.StartsWith("-config="))
+                if(arg.StartsWith("-config=", StringComparison.CurrentCultureIgnoreCase))
                 {
                     m_ConfigFile = arg.Substring("-config=".Length);
-                    Console.WriteLine("Using config file {0}", m_ConfigFile);
+                    Bot.Log(new LogMessage(LogSeverity.Info, "Program", $"Using config file {m_ConfigFile}"));
                 }
             }
 
             if(m_ConfigFile == null)
             {
-                Console.WriteLine("No config file.");
-                throw new ArgumentNullException("-config=", "The config file parameter was not supplied, or was not found.");
+                Bot.Log(new LogMessage(LogSeverity.Critical, "Program", $"No config file was supplied."));
+                throw new InvalidOperationException("The config file parameter was not supplied, or was not found.");
             }
 
             GlobalConfig = new GlobalConfiguration(m_ConfigFile);
@@ -37,7 +38,7 @@ namespace DiscordAchievementBot
             }
             catch(Exception e)
             {
-                Console.WriteLine("Error: {0}", e);
+                Bot.Log(new LogMessage(LogSeverity.Error, "Bot", "Encountered an Exception.", e));
             }
         }
     }
