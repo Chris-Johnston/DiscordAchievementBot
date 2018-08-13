@@ -26,10 +26,6 @@ namespace DiscordAchievementBot
         [Summary("Replies back with some debug info about the bot.")]
         public async Task DebugInfo()
         {
-            // download all of the users for each guild
-            var client = Context.Client as DiscordSocketClient;
-            await client.DownloadUsersAsync(client.Guilds).ConfigureAwait(false);
-
             await ReplyAsync(
                 $"{Format.Bold("Info")}\n" +
                 $"- D.NET Lib Version {DiscordConfig.Version} (API v{DiscordConfig.APIVersion})\n" +
