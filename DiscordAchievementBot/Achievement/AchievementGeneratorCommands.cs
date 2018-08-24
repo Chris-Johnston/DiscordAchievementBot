@@ -183,6 +183,10 @@ An achievement with spaces in it must be surrounded with quotation marks. Valid 
 
 Example:
 `++Generate ""Opened the README"" 999 XboxOne`
+
+Please post your feedback to <https://github.com/Chris-Johnston/DiscordAchievementBot>
+
+In a server, I require the Send Messages and Attach Files permissions.
 ";
             await ReplyAsync(helpText).ConfigureAwait(false);
         }
