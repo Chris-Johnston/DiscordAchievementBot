@@ -34,7 +34,7 @@ namespace DiscordAchievementBot
                 $"- Uptime: {GetUpTime()}\n\n" +
                 $"- Guilds: {(Context.Client as DiscordSocketClient).Guilds.Count}\n" +
                 $"- Channels: {(Context.Client as DiscordSocketClient).Guilds.Sum(g => g.Channels.Count)}\n" +
-                $"- Users: {(Context.Client as DiscordSocketClient).Guilds.Sum(g => g.Users.Count)}\n" +
+                $"- Users: {(Context.Client as DiscordSocketClient).Guilds.Sum(g => g.MemberCount)}\n" +
                 $"# of images generated = {generator.GenerationCounter}"
                 ).ConfigureAwait(false);
         }
