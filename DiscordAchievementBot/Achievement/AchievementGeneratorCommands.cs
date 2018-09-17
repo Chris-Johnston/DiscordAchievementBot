@@ -173,15 +173,29 @@ namespace DiscordAchievementBot
         public async Task Help()
         {
             string helpText =
-@"
+@"**Available Commands:**
+
 ```
 ++About
 ++InviteLink
-++Generate <text> [score] [type]
+++Generate <Text>
+++Generate [Score] <Text>
+++Generate [Type] <Text>
+++Generate [Score] [Type] <Text>
+++Generate [Type] [Score] <Text>
 ```
 An achievement with spaces in it must be surrounded with quotation marks. Valid types are `XboxOne`, `XboxOneRare`, and `Xbox360`.
+The `Xbox360` preset is not yet implemented.
 
-Example:
+**Example:**
+```
+++Generate Read the documentation
+++Generate 123 This is a test
+++Generate XboxOneRare Wow, so rare!
+++Generate 2 XboxOneRare So many options!
+++Generate XboxOne 10 This is a test
+```
+
 `++Generate ""Opened the README"" 999 XboxOne`
 
 Please post your feedback to <https://github.com/Chris-Johnston/DiscordAchievementBot>
