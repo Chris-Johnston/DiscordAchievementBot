@@ -184,7 +184,8 @@ namespace DiscordAchievementBot
 ++Generate [Score] [Type] <Text>
 ++Generate [Type] [Score] <Text>
 ```
-An achievement with spaces in it must be surrounded with quotation marks. Valid types are `XboxOne`, `XboxOneRare`, and `Xbox360`.
+
+Valid types are `XboxOne`, `XboxOneRare`, and `Xbox360`.
 The `Xbox360` preset is not yet implemented.
 
 **Example:**
