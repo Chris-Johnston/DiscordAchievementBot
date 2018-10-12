@@ -26,11 +26,11 @@ namespace DiscordAchievementBot
 
         // paths to the background images for each of the achievement presets
         // in the Resources folder which should be configured to always copy to output directory
-        public string PathAchievementXboxOneBackground
+        public static string PathAchievementXboxOneBackground
             => Path.Combine("Resources", "xboxone.png");
-        public string PathAchievementXboxOneRareBackground
+        public static string PathAchievementXboxOneRareBackground
             => Path.Combine("Resources", "xboxonerare.png");
-        public string PathAchievementXbox360Background
+        public static string PathAchievementXbox360Background
             => Path.Combine("Resources", "test.png");
 
     }
