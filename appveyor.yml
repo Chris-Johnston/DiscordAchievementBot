@@ -7,6 +7,7 @@ platform: Any CPU
 before_build:
 - >-
     nuget sources Add -Name DiscordNet -Source https://www.myget.org/F/discord-net/api/v3/index.json
+
     dotnet restore
 build:
   project: DiscordAchievementBot.sln
