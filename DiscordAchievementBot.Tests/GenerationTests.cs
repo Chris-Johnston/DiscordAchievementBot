@@ -17,7 +17,7 @@ namespace DiscordAchivementBot.Tests
             // make the configuration that ImageGenerator needs
             Configuration config = new Configuration()
             {
-                ConnectionToken = "1234", ImageTemporaryDirectory = Directory.GetCurrentDirectory()
+                ConnectionToken = "1234"
             };
 
             m_generator = new ImageGenerator(config);
@@ -26,13 +26,10 @@ namespace DiscordAchivementBot.Tests
         [TestMethod]
         public void TestPath()
         {
-            string p = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar;
-
+            string p = Path.Combine(Path.GetTempPath(), "achievement123.png");
             // test that the path is being generated correctly
             string path = m_generator.GenerateImagePath(123);
-            string correctPath = System.Environment.ExpandEnvironmentVariables(p);
-            correctPath += "achievement123.png";
-            Assert.AreEqual(path, correctPath);
+            Assert.AreEqual(p, path);
 
             string path2 = m_generator.GenerateImagePath(18446744073709551615);
             string correctPath2 = System.Environment.ExpandEnvironmentVariables(p);
@@ -70,7 +67,6 @@ namespace DiscordAchivementBot.Tests
 
                 // delete image id 123
                 m_generator.DeleteImage(123);
-
                 Assert.IsTrue(true);
             }
             catch
