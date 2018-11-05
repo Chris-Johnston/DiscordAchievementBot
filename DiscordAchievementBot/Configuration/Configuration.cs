@@ -16,14 +16,6 @@ namespace DiscordAchievementBot
         [XmlElement("ConnectionToken")]
         public string ConnectionToken { get; set; }
 
-        /// <summary>
-        /// The location where the images will be stored temporariliy on disk before being 
-        /// deleted.
-        /// Typically, this is set to %TEMP%.
-        /// </summary>
-        [XmlElement("ImageTemporaryDirectory")]
-        public string ImageTemporaryDirectory { get; set; }
-
         // paths to the background images for each of the achievement presets
         // in the Resources folder which should be configured to always copy to output directory
         public static string PathAchievementXboxOneBackground

@@ -22,7 +22,7 @@ namespace DiscordAchievementBot
         {
             // generate path in format
             // %path%/123456789.png
-            string path = Path.Combine(m_config.ImageTemporaryDirectory, $"achievement{imageID}.png");
+            string path = Path.Combine(Path.GetTempPath(), $"achievement{imageID}.png");
             // expand environment variables
             return Environment.ExpandEnvironmentVariables(path);
         }
