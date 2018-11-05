@@ -32,9 +32,8 @@ namespace DiscordAchivementBot.Tests
             Assert.AreEqual(p, path);
 
             string path2 = m_generator.GenerateImagePath(18446744073709551615);
-            string correctPath2 = System.Environment.ExpandEnvironmentVariables(p);
-            correctPath2 += "achievement18446744073709551615.png";
-            Assert.AreEqual(path2, correctPath2);
+            p = Path.Combine(Path.GetTempPath(), "achievement18446744073709551615.png");
+            Assert.AreEqual(p, path2);
         }
 
         [TestMethod]
