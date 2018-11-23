@@ -3,11 +3,12 @@ Description=Achievement Bot for Discord
 
 [Service]
 WorkingDirectory=/home/ubuntu/DiscordAchievementBot/DiscordAchievementBot
-ExecStartPre=./update.sh
+ExecStartPre=/home/ubuntu/DiscordAchievementBot/update.sh
 ExecStart=/usr/bin/dotnet run -config=/home/ubuntu/BotConfig/AchievementConfig.xml
 Restart=on-failure
 StandardOutput=syslog
 StandardError=syslog
+User=ubuntu
 
 [Install]
 WantedBy=multi-user.target

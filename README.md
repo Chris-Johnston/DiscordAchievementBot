@@ -38,6 +38,15 @@ export FONTCONFIG_PATH=/etc/fonts
 Then, run the bot again. If the error is resolved, then you can append the command to the end of the 
 `~/.bashrc` file.
 
+Install the systemctl service
+
+```console
+chmod 664 achievementbot.service
+sudo cp achievementbot.service /etc/systemd/service/
+```
+
+Enable and run the service
+
 
 ## Commands
 
