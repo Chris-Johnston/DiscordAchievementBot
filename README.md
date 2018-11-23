@@ -19,6 +19,25 @@ A bot that generates Xbox-style achievement popups for a Discord server.
 - Run with `dotnet run -config:C:\Path\To\config.xml`
 - Add to your server(s). The command window will print out an invite url once the bot has connected.
 
+### Deployment Notes on Linux
+
+This bot requires that the font `segoeui.ttf` is installed on your system. This is not included
+in any packages or distros, so you'll need to copy it from a Windows installation.
+
+The font can be found under `C:\Windows\Fonts\segoeui.ttf`.
+
+Copy it to the directory: `~/.fonts/segoeui.ttf`. Run the bot and try generating an image to verify that it works.
+
+If it's still not working, and the error message `Fontconfig error: Cannot load default config file` appears in the
+console output, [then try the following (from StackOverflow):](https://askubuntu.com/a/708541)
+
+```console
+export FONTCONFIG_PATH=/etc/fonts
+```
+
+Then, run the bot again. If the error is resolved, then you can append the command to the end of the 
+`~/.bashrc` file.
+
 
 ## Commands
 
