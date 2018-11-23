@@ -73,7 +73,7 @@ namespace DiscordAchievementBot
                         int rarePercent;
                         Random r = new Random();
                         rarePercent = r.Next(1, 5);
-                        headerLayer.Annotate("Rare achievement unlocked - " + rarePercent + "%", new MagickGeometry(155, 5, 400, 70), Gravity.West);
+                        headerLayer.Annotate($"Rare achievement unlocked - {rarePercent}%", new MagickGeometry(155, 5, 400, 70), Gravity.West);
                         headerLayer.Annotate($"{gs} - {achievementName}", new MagickGeometry(195, 55, 400, 70), Gravity.West);
                     }
 
