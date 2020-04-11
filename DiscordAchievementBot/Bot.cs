@@ -29,26 +29,17 @@ namespace DiscordAchievementBot
                 .AddSingleton(client)
                 .AddSingleton(handler)
                 .AddSingleton(new GamerScoreGenerator())
-                .AddSingleton(new ImageGenerator(Program.GlobalConfig.Data))
+                .AddSingleton(new ImageGenerator())
                 .BuildServiceProvider();
 
             await handler.Install(client, serviceProvider).ConfigureAwait(false);
 
             client.Log += LogAsync;
             client.Ready += Client_Ready;
-            client.GuildAvailable += Client_GuildAvailable;
 
             await client.SetGameAsync($"Type: {GlobalConfiguration.CommandPrefix}Help").ConfigureAwait(false);
 
             await Task.Delay(-1).ConfigureAwait(false);
-        }
-
-        private async Task Client_GuildAvailable(SocketGuild arg)
-        {
-            await Task.Run(() =>
-            {
-                Console.WriteLine($"Connected to guild {arg.Name} with {arg.MemberCount} members. ID {arg.Id}");
-            }).ConfigureAwait(false);
         }
 
         private async Task Client_Ready()
@@ -56,22 +47,14 @@ namespace DiscordAchievementBot
             Console.WriteLine($"Part of {client.Guilds.Count} guilds.");
 
             var application = await client.GetApplicationInfoAsync().ConfigureAwait(false);
-            Log(new LogMessage(LogSeverity.Info, "Program",
+            await LogAsync(new LogMessage(LogSeverity.Info, "Program",
                 $"Invite URL: <https://discordapp.com/oauth2/authorize?client_id={application.Id}&scope=bot>"));
-            Console.WriteLine($"Invite URL: <https://discordapp.com/oauth2/authorize?client_id={application.Id}&scope=bot>");
         }
 
-        public static void Log(Discord.LogMessage arg)
+        public static Task LogAsync(LogMessage message)
         {
-            Console.WriteLine(arg.ToString());
-        }
-
-        public static async Task LogAsync(LogMessage message)
-        {
-            await Task.Run(() =>
-            {
-                Console.WriteLine(message);
-            }).ConfigureAwait(false);
+            Console.WriteLine(message);
+            return Task.CompletedTask;
         }
 
         #region IDisposable Support

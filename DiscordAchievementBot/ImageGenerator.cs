@@ -9,21 +9,13 @@ namespace DiscordAchievementBot
 {
     public class ImageGenerator
     {
-        private readonly Configuration m_config;
-
         public int GenerationCounter { get; private set; } = 0;
-
-        public ImageGenerator(Configuration config)
-        {
-            m_config = config;
-        }
 
         public string GenerateImagePath(ulong imageID)
         {
             // generate path in format
             // %path%/123456789.png
             string path = Path.Combine(Path.GetTempPath(), $"achievement{imageID}.png");
-            // expand environment variables
             return Environment.ExpandEnvironmentVariables(path);
         }
 
@@ -50,7 +42,6 @@ namespace DiscordAchievementBot
 
             using (var backgroundStream = new FileStream(path, FileMode.Open))
             {
-                // now do stuff with the image
                 using (MagickImage image = new MagickImage(backgroundImagePath))
                 {
                     MagickImage headerLayer = new MagickImage(MagickColor.FromRgba(0, 0, 0, 0), image.Width, image.Height);
@@ -81,7 +72,7 @@ namespace DiscordAchievementBot
                     image.Write(GenerateImagePath(imageID));
                 }
             }
-            // increment the generation counter
+
             GenerationCounter++;
         }
 

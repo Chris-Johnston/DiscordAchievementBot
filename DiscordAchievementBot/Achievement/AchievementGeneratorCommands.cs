@@ -75,7 +75,7 @@ namespace DiscordAchievementBot
         [Priority(50)]
         public async Task Get(long gamerScore, AchievementType type, [Remainder] string achievementName)
         {
-            Bot.Log(new LogMessage(LogSeverity.Debug, "AchievementGeneratorCommands", $"Generating image for user {Context.User.Id} in {Context.Guild.Id}"));
+            await Bot.LogAsync(new LogMessage(LogSeverity.Debug, "AchievementGeneratorCommands", $"Generating image for user {Context.User.Id} in {Context.Guild.Id}"));
             
             // for 'work in progress' patterns, set them to use the one that works
             bool workInProgress = type == AchievementType.Xbox360;
@@ -85,7 +85,6 @@ namespace DiscordAchievementBot
             // if gamerScore unset, pick something random
             if (gamerScore == -1)
             {
-                // use a rare score
                 if (type == AchievementType.XboxOneRare)
                 {
                     gamerScore = gamerScoreGenerator.GetRareGamerScore;
@@ -96,8 +95,13 @@ namespace DiscordAchievementBot
                 }
             }
 
-            // tell the user that I'm working on it
-            IUserMessage ack = await ReplyAsync($"Right away, {Context.User.Mention}!").ConfigureAwait(true);
+            string username = Context.User.Username;
+            if (Context.User is IGuildUser guildUser && !string.IsNullOrWhiteSpace(guildUser.Nickname))
+            {
+                username = guildUser.Nickname;
+            }
+
+            var ack = await ReplyAsync($"Right away, {username}!").ConfigureAwait(true);
 
             await Task.Factory.StartNew(action: () =>
             {   
@@ -114,8 +118,9 @@ namespace DiscordAchievementBot
             await ack.DeleteAsync().ConfigureAwait(true);
 
             // tell the user if the pattern they chose is WIP
+            // this has been WIP for 2 years, it's not getting done
             string prefix = "";
-            if(workInProgress)
+            if (workInProgress)
             {
                 prefix = "That one is a work in progress.\n";
             }
@@ -136,7 +141,8 @@ namespace DiscordAchievementBot
             catch (Exception e)
             {
                 // log errors when trying to delete the acknowledgement message
-                Bot.Log(new LogMessage(LogSeverity.Warning, "AchievementGeneratorCommands", "Couldn't delete the message acknowledge message.", e));
+                await Bot.LogAsync(new LogMessage(LogSeverity.Warning, "AchievementGeneratorCommands", "Couldn't delete the message acknowledge message.", e))
+                    .ConfigureAwait(false);
             }
         }
 

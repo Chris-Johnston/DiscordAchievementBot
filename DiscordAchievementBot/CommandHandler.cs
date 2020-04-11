@@ -52,7 +52,7 @@ namespace DiscordAchievementBot
 
                 // log the error
                 Discord.LogMessage errorMessage = new Discord.LogMessage(Discord.LogSeverity.Warning, "CommandHandler", result.ErrorReason);
-                Bot.Log(errorMessage);
+                Bot.LogAsync(errorMessage);
                 
                 // don't actually reply back with the error
             }

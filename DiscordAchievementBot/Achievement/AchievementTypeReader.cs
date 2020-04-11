@@ -9,7 +9,7 @@ namespace DiscordAchievementBot
     /// <summary>
     /// TypeReader converter that converts an input string to the enum AchievementType
     /// </summary>
-    class AchievementTypeReader : TypeReader
+    public class AchievementTypeReader : TypeReader
     {
         public override Task<TypeReaderResult> ReadAsync(ICommandContext context, string input, IServiceProvider services)
         {

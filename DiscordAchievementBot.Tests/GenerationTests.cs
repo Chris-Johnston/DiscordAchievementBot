@@ -9,7 +9,7 @@ namespace DiscordAchivementBot.Tests
     [TestClass]
     public class GenerationTests
     {
-        private ImageGenerator m_generator = null;
+        private ImageGenerator generator = null;
 
         [TestInitialize]
         public void Before()
@@ -20,7 +20,7 @@ namespace DiscordAchivementBot.Tests
                 ConnectionToken = "1234"
             };
 
-            m_generator = new ImageGenerator(config);
+            generator = new ImageGenerator();
         }
 
         [TestMethod]
@@ -28,10 +28,10 @@ namespace DiscordAchivementBot.Tests
         {
             string p = Path.Combine(Path.GetTempPath(), "achievement123.png");
             // test that the path is being generated correctly
-            string path = m_generator.GenerateImagePath(123);
+            string path = generator.GenerateImagePath(123);
             Assert.AreEqual(p, path);
 
-            string path2 = m_generator.GenerateImagePath(18446744073709551615);
+            string path2 = generator.GenerateImagePath(18446744073709551615);
             p = Path.Combine(Path.GetTempPath(), "achievement18446744073709551615.png");
             Assert.AreEqual(p, path2);
         }
@@ -45,9 +45,9 @@ namespace DiscordAchivementBot.Tests
             try
             {
                 // try generating one of each
-                m_generator.GenerateImage("TEST", 123, AchievementType.XboxOne, 123);
-                m_generator.GenerateImage("TEST", 123, AchievementType.Xbox360, 123);
-                m_generator.GenerateImage("TEST", 123, AchievementType.XboxOneRare, 123);
+                generator.GenerateImage("TEST", 123, AchievementType.XboxOne, 123);
+                generator.GenerateImage("TEST", 123, AchievementType.Xbox360, 123);
+                generator.GenerateImage("TEST", 123, AchievementType.XboxOneRare, 123);
 
                 Assert.IsTrue(true);
             } catch
@@ -62,10 +62,10 @@ namespace DiscordAchivementBot.Tests
             try
             {
                 // create image id 123
-                m_generator.GenerateImage("TEST!", 123, AchievementType.XboxOne, 123);
+                generator.GenerateImage("TEST!", 123, AchievementType.XboxOne, 123);
 
                 // delete image id 123
-                m_generator.DeleteImage(123);
+                generator.DeleteImage(123);
                 Assert.IsTrue(true);
             }
             catch
@@ -86,10 +86,10 @@ namespace DiscordAchivementBot.Tests
             try
             {
                 // create image id 123
-                m_generator.GenerateImage("TEST!", 123, AchievementType.XboxOne, 123);
+                generator.GenerateImage("TEST!", 123, AchievementType.XboxOne, 123);
 
                 // delete image id 123
-                m_generator.DeleteImage(123);
+                generator.DeleteImage(123);
 
                 Assert.IsTrue(true);
             }
@@ -105,7 +105,7 @@ namespace DiscordAchivementBot.Tests
             try
             {
                 // delete image id 123
-                m_generator.DeleteImage(123);
+                generator.DeleteImage(123);
 
                 Assert.Fail();
             }
