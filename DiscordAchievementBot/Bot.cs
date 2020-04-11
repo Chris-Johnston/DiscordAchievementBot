@@ -16,7 +16,7 @@ namespace DiscordAchievementBot
         public async Task Start()
         {
             // define DiscordSocketClient
-            client = new DiscordSocketClient(new DiscordSocketConfig() { LogLevel = Discord.LogSeverity.Info });
+            client = new DiscordSocketClient(new DiscordSocketConfig() { LogLevel = Discord.LogSeverity.Warning });
 
             // log in
             await client.LoginAsync(Discord.TokenType.Bot, Program.GlobalConfig.Data.ConnectionToken).ConfigureAwait(false);
